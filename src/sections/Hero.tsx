@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, type Variants } from "framer-motion";
 import { siteConfig } from "@/data/config";
 import { Globe } from "@/components/Globe";
 
@@ -61,13 +61,15 @@ export function Hero() {
   const y = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
   const opacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
 
-  const containerVariants = {
+  const easeOut: [number, number, number, number] = [0.22, 1, 0.36, 1];
+
+  const containerVariants: Variants = {
     hidden: {},
     visible: { transition: { staggerChildren: 0.12, delayChildren: 0.2 } },
   };
-  const itemVariants = {
+  const itemVariants: Variants = {
     hidden: { opacity: 0, y: 32, filter: "blur(6px)" },
-    visible: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } },
+    visible: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 0.7, ease: easeOut } },
   };
 
   return (
@@ -176,7 +178,7 @@ export function Hero() {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 1, delay: 0.5, ease: easeOut }}
           className="flex items-center justify-center pb-16 lg:justify-end"
         >
           <div className="relative w-[140%]">

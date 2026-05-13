@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 import { siteConfig } from "@/data/config";
 
 const timeline = [
@@ -24,11 +24,13 @@ const timeline = [
 
 const mindsetImages = ["/gundam.jpeg", "/art.jpeg", "/track.jpeg"];
 
-const fadeUp = {
+const easeOut: [number, number, number, number] = [0.22, 1, 0.36, 1];
+
+const fadeUp: Variants = {
   hidden: { opacity: 0, y: 28, filter: "blur(4px)" },
   visible: (i: number) => ({
     opacity: 1, y: 0, filter: "blur(0px)",
-    transition: { duration: 0.65, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] },
+    transition: { duration: 0.65, delay: i * 0.1, ease: easeOut },
   }),
 };
 

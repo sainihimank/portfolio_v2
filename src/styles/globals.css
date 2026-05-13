@@ -1,0 +1,287 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Crimson+Pro:ital,wght@0,300;0,400;1,300;1,400&display=swap');
+@import "tailwindcss";
+
+/* FONTS */
+/* ─── TOKENS ─────────────────────────────────────────────── */
+:root {
+  --font-display: 'Syne', system-ui, sans-serif;
+  --font-body: 'Syne', system-ui, sans-serif;
+  --font-mono: 'DM Mono', 'Fira Code', monospace;
+  --font-serif: 'Crimson Pro', Georgia, serif;
+
+  /* Dark charcoal base – professional, bold */
+  --background: #0a0a0f;
+  --background-2: #0f0f18;
+  --foreground: #f0eee8;
+  --muted: #7a7890;
+  --muted-2: #4a4860;
+
+  /* Electric lime accent */
+  --accent: #c8ff00;
+  --accent-2: #a3d400;
+  --accent-hover: #d8ff20;
+  --accent-glow: rgba(200, 255, 0, 0.18);
+  --accent-glow-strong: rgba(200, 255, 0, 0.35);
+
+  /* Cards */
+  --card: #13131f;
+  --card-2: #1a1a2a;
+  --card-border: rgba(200, 255, 0, 0.12);
+  --card-border-hover: rgba(200, 255, 0, 0.3);
+
+  /* Gradients */
+  --gradient-start: #c8ff00;
+  --gradient-end: #00e5ff;
+  --gradient-mid: #9d4edd;
+}
+
+/* Ocean theme overrides */
+:root[data-theme="ocean"] {
+  --background: #030b14;
+  --background-2: #071525;
+  --foreground: #e8f4fd;
+  --muted: #5a8aaa;
+  --accent: #00e5ff;
+  --accent-2: #00b8d4;
+  --accent-hover: #40f0ff;
+  --accent-glow: rgba(0, 229, 255, 0.18);
+  --accent-glow-strong: rgba(0, 229, 255, 0.35);
+  --card: #071525;
+  --card-2: #0d2035;
+  --card-border: rgba(0, 229, 255, 0.12);
+  --card-border-hover: rgba(0, 229, 255, 0.3);
+  --gradient-start: #00e5ff;
+  --gradient-end: #c8ff00;
+  --gradient-mid: #7c3aed;
+}
+
+/* ─── RESET ─────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-body);
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a { color: inherit; text-decoration: none; }
+
+/* Custom scrollbar */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--background); }
+::-webkit-scrollbar-thumb { background: var(--accent-2); border-radius: 2px; }
+
+/* ─── LAYOUT ─────────────────────────────────────────────── */
+.section {
+  max-width: 80rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+@media (min-width: 640px) {
+  .section { padding-left: 2rem; padding-right: 2rem; }
+}
+@media (min-width: 1024px) {
+  .section { padding-left: 3rem; padding-right: 3rem; }
+}
+
+/* ─── GLASS ─────────────────────────────────────────────── */
+.glass {
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  background: rgba(10, 10, 15, 0.7);
+  border: 1px solid var(--card-border);
+}
+
+.glass-strong {
+  backdrop-filter: blur(16px) saturate(200%);
+  -webkit-backdrop-filter: blur(16px) saturate(200%);
+  background: rgba(10, 10, 15, 0.85);
+  border: 1px solid var(--card-border);
+}
+
+/* ─── TYPOGRAPHY ─────────────────────────────────────────── */
+.font-display { font-family: var(--font-display); }
+.font-mono { font-family: var(--font-mono); }
+.font-serif { font-family: var(--font-serif); }
+
+/* ─── GRADIENT TEXT ──────────────────────────────────────── */
+.gradient-text {
+  background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+@keyframes shimmer-gradient {
+  0%   { background-position: 100% 0, 0 0; }
+  100% { background-position: -100% 0, 0 0; }
+}
+
+.text-gradient-shimmer {
+  display: inline-block;
+  background-image:
+    linear-gradient(110deg, transparent 40%, rgba(255,255,255,0.55) 50%, transparent 60%),
+    linear-gradient(135deg, var(--gradient-start), var(--gradient-mid), var(--gradient-end));
+  background-size: 220% 100%, 100% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer-gradient 3.5s infinite linear;
+}
+
+/* ─── NOISE TEXTURE ──────────────────────────────────────── */
+.noise-overlay::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.4;
+}
+
+/* ─── GLOW EFFECTS ───────────────────────────────────────── */
+.glow-accent {
+  box-shadow: 0 0 40px var(--accent-glow), 0 0 80px var(--accent-glow);
+}
+
+.glow-text {
+  text-shadow: 0 0 30px var(--accent-glow-strong);
+}
+
+/* ─── CARD BASE ──────────────────────────────────────────── */
+.card-base {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: 1.5rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.card-base:hover {
+  border-color: var(--card-border-hover);
+  box-shadow: 0 0 30px var(--accent-glow);
+}
+
+/* ─── MARQUEE ────────────────────────────────────────────── */
+@keyframes marquee-left {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.animate-marquee { animation: marquee-left 28s linear infinite; }
+.animate-marquee-slow { animation: marquee-left 44s linear infinite; }
+
+/* ─── CURSOR GLOW ────────────────────────────────────────── */
+.cursor-glow {
+  pointer-events: none;
+  position: fixed;
+  width: 350px;
+  height: 350px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+  transition: opacity 0.3s ease;
+}
+
+/* ─── SECTION LABEL ──────────────────────────────────────── */
+.section-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.section-label::before {
+  content: '';
+  display: inline-block;
+  width: 1.5rem;
+  height: 1px;
+  background: var(--accent);
+}
+
+/* ─── TAG PILL ───────────────────────────────────────────── */
+.tag-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.65rem;
+  border-radius: 9999px;
+  border: 1px solid var(--card-border);
+  background: var(--card-2);
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  transition: border-color 0.2s, color 0.2s;
+}
+.tag-pill:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* ─── ANIMATED BORDER ────────────────────────────────────── */
+@keyframes border-spin {
+  to { --angle: 360deg; }
+}
+@property --angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+.animated-border {
+  border: 1px solid transparent;
+  background:
+    linear-gradient(var(--card), var(--card)) padding-box,
+    conic-gradient(from var(--angle), var(--accent), var(--gradient-mid), var(--gradient-end), var(--accent)) border-box;
+  animation: border-spin 4s linear infinite;
+}
+
+/* ─── HERO GRID ──────────────────────────────────────────── */
+.hero-grid {
+  background-image:
+    linear-gradient(rgba(200, 255, 0, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(200, 255, 0, 0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+/* ─── LINE REVEAL ────────────────────────────────────────── */
+@keyframes line-in {
+  from { clip-path: inset(0 100% 0 0); }
+  to   { clip-path: inset(0 0% 0 0); }
+}
+.line-reveal {
+  animation: line-in 0.8s cubic-bezier(0.77,0,0.175,1) forwards;
+}
+
+/* ─── FLOAT ──────────────────────────────────────────────── */
+@keyframes float-y {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
+}
+.animate-float { animation: float-y 6s ease-in-out infinite; }
+
+/* ─── PULSE RING ─────────────────────────────────────────── */
+@keyframes pulse-ring {
+  0%   { transform: scale(0.8); opacity: 1; }
+  100% { transform: scale(2); opacity: 0; }
+}
+.pulse-ring::before {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  border: 2px solid var(--accent);
+  animation: pulse-ring 2s ease-out infinite;
+}
+
+

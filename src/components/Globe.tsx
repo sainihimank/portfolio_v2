@@ -64,7 +64,7 @@ function OrbitingSkillIcons() {
                   <group key={tailIdx} rotation={[0, -t * 0.015, 0]}>
                     <mesh position={[orbit.radius, 0, 0]} scale={scale}>
                       <sphereGeometry args={[1, 8, 8]} />
-                      <meshBasicMaterial color="#050505" transparent opacity={opacity} />
+                      <meshBasicMaterial color="#ffbc57" transparent opacity={opacity} />
                     </mesh>
                   </group>
                 );
@@ -138,9 +138,9 @@ function DottedGlobe() {
 
 export function Globe() {
   return (
-    <div className="mx-auto h-[22rem] w-full max-w-full bg-transparent">
+    <div className="mx-auto h-[35rem] w-full max-w-full bg-transparent">
       <Canvas
-        camera={{ position: [0, 0, 3.05], fov: 42 }}
+        camera={{ position: [0, 0, 3.05], fov: 48 }}
         gl={{ alpha: true, antialias: true }}
       >
         <ambientLight intensity={0.35} color="#2cff9d" />

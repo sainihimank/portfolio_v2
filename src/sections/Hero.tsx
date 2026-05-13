@@ -174,12 +174,12 @@ export function Hero() {
 
         {/* RIGHT: Globe */}
         <motion.div
-          initial={{ opacity: 0, scale: 1 }}
-          animate={{ opacity: 1, scale: 1.4 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
           className="flex items-center justify-center pb-16 lg:justify-end"
         >
-          <div className="relative">
+          <div className="relative w-[140%]">
             <div className="absolute inset-0 rounded-full animate-float"
               style={{ background: "radial-gradient(circle, var(--accent-glow-strong) 0%, transparent 70%)", transform: "scale(1.4)" }} />
             <Globe />

@@ -1,5 +1,6 @@
-"use client";
+﻿"use client";
 
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { motion, type Variants } from "framer-motion";
 import { siteConfig } from "@/data/config";
@@ -22,22 +23,37 @@ const timeline = [
   },
 ];
 
-const mindsetImages = ["/gundam.jpeg", "/art.jpeg", "/track.jpeg"];
+const mindsetSlides = [
+  { src: "/gundam.jpeg", label: "Gunpla" },
+  { src: "/art.jpeg", label: "Art" },
+  { src: "/track.jpeg", label: "Athletics" },
+];
 
 const easeOut: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 28, filter: "blur(4px)" },
   visible: (i: number) => ({
-    opacity: 1, y: 0, filter: "blur(0px)",
+    opacity: 1,
+    y: 0,
+    filter: "blur(0px)",
     transition: { duration: 0.65, delay: i * 0.1, ease: easeOut },
   }),
 };
 
 export function About() {
+  const [activeSlide, setActiveSlide] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveSlide((prev) => (prev + 1) % mindsetSlides.length);
+    }, 2800);
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <section id="about" className="section pb-28" style={{ scrollMarginTop: "120px" }}>
-      {/* Section heading */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -52,51 +68,91 @@ export function About() {
       </motion.div>
 
       <div className="grid gap-4 lg:grid-cols-[0.95fr_1.05fr_0.95fr]">
-
-        {/* LEFT: Mindset */}
         <motion.article
-          custom={0} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
+          custom={0}
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
           className="card-base p-6 flex flex-col"
         >
-          <span className="section-label">Mindset</span>
-          <h3 className="mt-4 font-display text-3xl font-bold leading-tight">More than<br />code.</h3>
-          <p className="mt-3 text-sm leading-relaxed" style={{ color: "var(--muted)" }}>
-            Discipline and consistency shape how I build products. Beyond the screen — athletics, art, and curiosity drive everything.
+          <h3 className="font-display text-5xl font-bold leading-none tracking-tight">Mindset</h3>
+          <div className="mt-3 h-0.5 w-14 rounded-full" style={{ background: "var(--accent)" }} />
+
+          <p className="mt-5 text-base leading-relaxed" style={{ color: "var(--muted)" }}>
+            Building more than software. My passions provide the{" "}
+            <span className="font-semibold" style={{ color: "var(--foreground)" }}>
+              discipline and focus
+            </span>{" "}
+            I need to grow.
           </p>
 
-          <div className="mt-5 space-y-2 flex-1">
-            {mindsetImages.map((src, index) => (
-              <motion.div
-                key={src}
-                whileHover={{ scale: 1.02 }}
-                transition={{ duration: 0.3 }}
-                className="overflow-hidden rounded-xl border"
-                style={{ borderColor: "var(--card-border)" }}
-              >
-                <Image
-                  src={src}
-                  alt={`Mindset ${index + 1}`}
-                  width={900}
-                  height={500}
-                  className="h-20 w-full object-cover transition-transform duration-500 hover:scale-105"
-                />
-              </motion.div>
-            ))}
+          <div className="relative mt-7 flex min-h-[280px] items-center justify-center">
+            {mindsetSlides.map((slide, index) => {
+              const isActive = index === activeSlide;
+              const prevIndex = (activeSlide - 1 + mindsetSlides.length) % mindsetSlides.length;
+              const nextIndex = (activeSlide + 1) % mindsetSlides.length;
+              const isSide = index === prevIndex || index === nextIndex;
+
+              return (
+                <motion.div
+                  key={slide.src}
+                  animate={{
+                    opacity: isActive ? 1 : isSide ? 0.22 : 0,
+                    scale: isActive ? 1 : 0.93,
+                    x: isActive ? 0 : index === prevIndex ? -92 : index === nextIndex ? 92 : 0,
+                    zIndex: isActive ? 20 : 10,
+                  }}
+                  transition={{ duration: 0.7, ease: easeOut }}
+                  className="absolute w-[72%] max-w-[260px]"
+                >
+                  <div
+                    className="overflow-hidden rounded-3xl border p-1.5"
+                    style={{
+                      borderColor: isActive ? "var(--accent)" : "var(--card-border)",
+                      boxShadow: isActive ? "0 18px 40px rgba(0, 0, 0, 0.35)" : "none",
+                      background: "linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0))",
+                    }}
+                  >
+                    <Image
+                      src={slide.src}
+                      alt={slide.label}
+                      width={700}
+                      height={900}
+                      className="h-[255px] w-full rounded-[1.1rem] object-cover"
+                    />
+                    <div className="pointer-events-none absolute bottom-5 left-5 rounded-lg border px-3 py-1.5"
+                      style={{
+                        borderColor: "rgba(255,255,255,0.35)",
+                        background: "rgba(12, 14, 20, 0.7)",
+                        backdropFilter: "blur(2px)",
+                      }}>
+                      <p className="font-display text-sm font-extrabold uppercase tracking-wide text-white">
+                        {slide.label}
+                      </p>
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            })}
           </div>
 
-          {/* Fun tag */}
-          <div className="mt-4 flex flex-wrap gap-2">
-            {["Athletics", "Design", "Systems"].map((t) => (
-              <span key={t} className="tag-pill">{t}</span>
-            ))}
-          </div>
+          <p className="mt-6 text-base leading-relaxed" style={{ color: "var(--muted)" }}>
+            Mastering body and mind is my path to{" "}
+            <span className="font-semibold" style={{ color: "var(--foreground)" }}>
+              excellence
+            </span>
+            .
+          </p>
         </motion.article>
 
-        {/* MIDDLE: Two cards */}
         <div className="space-y-4">
-          {/* About text card */}
           <motion.article
-            custom={1} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
+            custom={1}
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
             className="card-base p-7"
           >
             <span className="section-label">About Me</span>
@@ -105,13 +161,16 @@ export function About() {
               {siteConfig.title}
             </p>
             <p className="mt-4 text-sm leading-relaxed" style={{ color: "var(--muted)" }}>
-              I design and build reliable digital experiences — balancing product thinking, clean architecture, and speed. From backend APIs to pixel-perfect UIs.
+              I design and build reliable digital experiences - balancing product thinking, clean architecture, and speed. From backend APIs to pixel-perfect UIs.
             </p>
           </motion.article>
 
-          {/* Photo grid */}
           <motion.article
-            custom={2} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
+            custom={2}
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
             className="overflow-hidden rounded-3xl border"
             style={{ borderColor: "var(--card-border)" }}
           >
@@ -128,9 +187,12 @@ export function About() {
             </div>
           </motion.article>
 
-          {/* Location */}
           <motion.article
-            custom={3} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
+            custom={3}
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
             className="card-base p-5"
           >
             <div className="flex items-end justify-between">
@@ -139,16 +201,18 @@ export function About() {
                   INDIA
                 </p>
                 <p className="mt-1 font-mono text-xs" style={{ color: "var(--muted)", letterSpacing: "0.1em" }}>
-                  28.6139° N, 77.2090° E
+                  28.6139 N, 77.2090 E
                 </p>
                 <p className="font-mono text-xs" style={{ color: "var(--muted-2)" }}>GMT +5:30</p>
               </div>
               <div className="font-display text-5xl" style={{ color: "var(--accent)", opacity: 0.3 }}>
-                ◎
+                O
               </div>
             </div>
-            <div className="mt-3 inline-flex items-center gap-1.5 rounded-full border px-3 py-1"
-              style={{ borderColor: "var(--card-border)", background: "var(--card-2)" }}>
+            <div
+              className="mt-3 inline-flex items-center gap-1.5 rounded-full border px-3 py-1"
+              style={{ borderColor: "var(--card-border)", background: "var(--card-2)" }}
+            >
               <span className="h-1.5 w-1.5 rounded-full animate-pulse" style={{ background: "var(--accent)" }} />
               <span className="font-mono text-xs" style={{ color: "var(--muted)", letterSpacing: "0.08em" }}>
                 Open to remote
@@ -157,9 +221,12 @@ export function About() {
           </motion.article>
         </div>
 
-        {/* RIGHT: Timeline */}
         <motion.article
-          custom={4} variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true }}
+          custom={4}
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
           className="card-base p-6"
         >
           <span className="section-label">Journey</span>
@@ -175,29 +242,32 @@ export function About() {
                 transition={{ delay: i * 0.15, duration: 0.5 }}
                 className="relative pl-6"
               >
-                {/* Line */}
-                <div className="absolute left-0 top-0 h-full w-px"
-                  style={{ background: `linear-gradient(to bottom, var(--accent) 0%, transparent 100%)` }} />
-                {/* Dot */}
-                <div className="absolute -left-[5px] top-1.5 h-2.5 w-2.5 rounded-full border-2"
-                  style={{ borderColor: "var(--accent)", background: "var(--background)" }} />
+                <div
+                  className="absolute left-0 top-0 h-full w-px"
+                  style={{ background: "linear-gradient(to bottom, var(--accent) 0%, transparent 100%)" }}
+                />
+                <div
+                  className="absolute -left-[5px] top-1.5 h-2.5 w-2.5 rounded-full border-2"
+                  style={{ borderColor: "var(--accent)", background: "var(--background)" }}
+                />
 
                 <p className="font-mono text-xs font-bold tracking-wider" style={{ color: "var(--accent)" }}>
                   {item.year}
                 </p>
                 <h4 className="mt-1 font-display text-base font-bold leading-tight">{item.title}</h4>
-                <p className="mt-1 text-sm leading-relaxed" style={{ color: "var(--muted)" }}>{item.detail}</p>
+                <p className="mt-1 text-sm leading-relaxed" style={{ color: "var(--muted)" }}>
+                  {item.detail}
+                </p>
               </motion.div>
             ))}
           </div>
 
-          {/* Bottom accent */}
           <div className="mt-8 rounded-xl border p-4" style={{ borderColor: "var(--card-border)", background: "var(--card-2)" }}>
             <p className="font-mono text-xs" style={{ color: "var(--muted)" }}>
               Currently working on
             </p>
             <p className="mt-1 font-display text-sm font-bold" style={{ color: "var(--foreground)" }}>
-              Motodevil.shop · Premium e-commerce
+              Motodevil.shop - Premium e-commerce
             </p>
             <div className="mt-2 flex items-center gap-1.5">
               <span className="h-1.5 w-1.5 rounded-full animate-pulse" style={{ background: "#22c55e" }} />

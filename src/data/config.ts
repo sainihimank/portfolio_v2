@@ -28,7 +28,7 @@ export const siteConfig = {
   name: "Himank Saini",
   title: "Full Stack Developer",
   description: "I build scalable web products with modern full stack technologies.",
-  resumeDriveLink: "https://drive.google.com/file/d/REPLACE_WITH_YOUR_FILE_ID/view",
-  resumeDownloadLink: "https://drive.google.com/uc?export=download&id=REPLACE_WITH_YOUR_FILE_ID",
+  resumeDriveLink: "https://drive.google.com/file/d/1RWq8ZiEthcW5S-YzdNXImqoAXowk6t3b/view?usp=sharing",
+  resumeDownloadLink: "https://drive.google.com/uc?export=download&id=1RWq8ZiEthcW5S-YzdNXImqoAXowk6t3b",
   githubUsername: "sainihimank",
 };

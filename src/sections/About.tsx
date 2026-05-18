@@ -164,10 +164,10 @@ export function About() {
                 </p>
                 <h4 className="mt-2 font-display text-xl font-bold leading-tight">B.Tech in Computer Science</h4>
                 <p className="mt-1 text-sm" style={{ color: "var(--muted)" }}>
-                  Maharshi Dayanand University
+                  Abes Engineering College
                 </p>
                 <p className="mt-1 font-mono text-xs" style={{ color: "var(--muted-2)", letterSpacing: "0.08em" }}>
-                  2022 - 2026
+                  2021 - 2025
                 </p>
               </div>
               <div className="font-display text-4xl" style={{ color: "var(--accent)", opacity: 0.35 }}>
